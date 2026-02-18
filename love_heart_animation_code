@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Love Heart</title>
+
+<style>
+body {
+  margin: 0;
+  background: black;
+  overflow: hidden;
+}
+
+.love {
+  position: absolute;
+  color: #ea80b0;
+  font-size: 16px;
+  text-shadow: 0 0 8px white;
+  white-space: nowrap;
+  animation: float 4s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(15px); }
+}
+</style>
+</head>
+
+<body>
+
+<script>
+const total = 120;
+const words = [];
+let scale = 15;
+
+for (let i = 0; i < total; i++) {
+  let div = document.createElement("div");
+  div.className = "love";
+  div.innerText = "I love you";
+  document.body.appendChild(div);
+
+  words.push({
+    element: div,
+    t: (i / total) * Math.PI * 2
+  });
+}
+
+function animate() {
+  words.forEach((word, index) => {
+
+    // Move along curve
+    word.t += 0.004;
+
+    let t = word.t;
+
+    let x = 16 * Math.pow(Math.sin(t), 3);
+    let y = 13 * Math.cos(t)
+            - 5 * Math.cos(2 * t)
+            - 2 * Math.cos(3 * t)
+            - Math.cos(4 * t);
+
+    word.element.style.left =
+      (window.innerWidth / 2 + x * scale) + "px";
+
+    word.element.style.top =
+      (window.innerHeight / 2 - y * scale) + "px";
+
+    // Optional: rotate text to follow curve
+    word.element.style.transform =
+      `rotate(${t * 180 / Math.PI}deg)`;
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
